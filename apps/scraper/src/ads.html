@@ -1,0 +1,271 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>넥슨 - www.nexon.com</title>
+    <style type="text/css">
+        body,
+        dl,
+        dt,
+        dd,
+        ul,
+        ol,
+        li,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        form,
+        fieldset,
+        p {
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        input,
+        textarea,
+        select {
+            color: #000000;
+            font: 12px "malgun gothic", "나눔고딕", "NanumGothic", "돋움", "dotum", "Segoe WP", "Helvetica", "sans serif";
+            font-weight: normal;
+            line-height: 15px;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            background-color: #f1f1f1;
+        }
+
+        ol,
+        ul {
+            list-style: none;
+        }
+
+        img,
+        fieldset {
+            border: 0 none;
+        }
+
+        em,
+        address {
+            font-style: normal;
+        }
+
+        img {
+            vertical-align: middle;
+        }
+
+        a:link,
+        a:visited,
+        a:hover,
+        a:active {
+            color: #4c4c4c;
+            text-decoration: none;
+        }
+
+        .skipNav {
+            height: 1px;
+            width: 1px;
+            margin: 0 -1px -1px 0;
+        }
+
+        .skipNav a {
+            display: block;
+            height: 1px;
+            width: 1px;
+            padding: 0;
+            overflow: hidden;
+            font-size: 0;
+            line-height: 0;
+        }
+
+        .skipNav a:hover,
+        .skipNav a:active,
+        .skipNav a:focus {
+            position: absolute;
+            top: 0;
+            left: 80px;
+            height: auto;
+            width: auto;
+            margin: 0;
+            padding: 5px 20px;
+            font-size: 12px;
+            line-height: 1;
+            background-color: #ffffff;
+            color: #000000;
+            z-index: 100000;
+        }
+
+        #wrapper {
+            width: 100%;
+        }
+
+        #cnts {
+            width: 990px;
+            height: 401px;
+            padding-top: 188px;
+            margin: 40px auto;
+            text-align: center;
+            background: #fff url("https://ssl.nexon.com/S2/p3/etc/2016/ico_error.gif") no-repeat center 91px;
+        }
+
+        #ErrorMessage {
+            height: 77px;
+            font-size: 47px;
+            line-height: 47px;
+            letter-spacing: -5px;
+        }
+
+        #ErrorMessageInfo {
+            height: 88px;
+            font-size: 17px;
+            line-height: 25px;
+            letter-spacing: -2px;
+        }
+
+        .errorNote {
+            width: 362px;
+            height: 68px;
+            padding-top: 32px;
+            font-size: 11px;
+            line-height: 17px;
+            color: #999;
+            border-top: 1px solid #ccc;
+            margin: 0 auto;
+        }
+
+        .errorNote a {
+            text-decoration: underline;
+            color: #999;
+        }
+
+        .bt a {
+            margin: 0 4px;
+        }
+
+    </style>
+    <link rel="shortcut icon" href="https://ssl.nexon.com/s2/portal/nexon/image/nexon/nexon.ico">
+    <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
+    <script async type="text/javascript" src="https://ssl.nexon.com/s1/da/a2s.js"></script>
+    <script type="text/javascript" language='javaScript'>
+        function gnbResize(size) {
+            position_top(size);
+        }
+
+        function position_top(gnbSize) {
+            var windowHeight = document.body.clientHeight,
+                cntsEl = document.getElementById("cnts"),
+                cntsHeight = cntsEl.clientHeight,
+                cntsMargin = (windowHeight - cntsHeight - gnbSize) / 2;
+            cntsmarginMin = 40;
+            if (cntsMargin >= cntsmarginMin) {
+                cntsEl.style.margin = cntsMargin + "px auto";
+            } else {
+                cntsEl.style.margin = cntsmarginMin + "px auto";
+            }
+        }
+
+        function func_onload() {
+            var pos = 0;
+            var strName = '';
+            var strValue = '';
+
+            var tmpErrorMessage = '';
+            var tmpErrorMessageInfo = '';
+
+            var strQueryString = document.location.href.substr(document.location.href.indexOf("?") + 1);
+            var arrCollection = strQueryString.split("&");
+
+            for (var idx = 0; idx < arrCollection.length; idx++) {
+                pos = arrCollection[idx].indexOf("=");
+                if (pos == -1) continue;
+                strName = arrCollection[idx].substring(0, pos);
+                strValue = arrCollection[idx].substring(pos + 1);
+
+                if (strName == 'error')
+                    break;
+                else
+                    strValue = '';
+            }
+
+            if (strValue == '5xx') {
+                tmpErrorMessage = "지금은 서비스를 이용할 수 없습니다.";
+                tmpErrorMessageInfo = "이용에 불편을 드려 죄송합니다.<br>잠시 후 다시 한 번 시도해주세요.";
+            } else if (strValue == '4xx') {
+                tmpErrorMessage = "페이지에 접근할 수 없습니다.";
+                tmpErrorMessageInfo = "이용에 불편을 드려 죄송합니다.<br>잘못된 접근이거나 권한이 없는 페이지입니다.";
+            } else if (strValue == '404') {
+                tmpErrorMessage = "페이지를 찾을 수 없습니다.";
+                tmpErrorMessageInfo = "제거되었거나 이름이 변경되었을 수 있습니다.<br>주소를 다시 한 번 확인해주세요.";
+            } else if (strValue == '503') {
+                tmpErrorMessage = "지금은 서비스를 이용할 수 없습니다.";
+                tmpErrorMessageInfo = "사용자가 너무 많아 서비스 이용이 어렵습니다.<br>잠시 후 다시 한 번 시도해주세요.";
+            } else if (strValue == '8xx') {
+                tmpErrorMessage = "페이지가 일시적으로 차단되었습니다.";
+                tmpErrorMessageInfo = "비정상적인 접근 시도로 인해 일시적으로 차단되었습니다.<br>잠시 후 다시 한번 시도해주세요.";
+            } else {
+                tmpErrorMessage = "사용할 수 없는 페이지입니다.";
+                tmpErrorMessageInfo = "이용에 불편을 드려 죄송합니다.<br>주소를 다시 한 번 확인해주세요.";
+            }
+
+            document.getElementById('ErrorMessage').innerHTML = tmpErrorMessage;
+            document.getElementById('ErrorMessageInfo').innerHTML = tmpErrorMessageInfo;
+            // position_top(document.getElementById("GNB_Wrapper").clientHeight);
+        }
+
+        function setA2SLog($target) {
+            $target.find("[a2s]").each(function () {
+                if ($(this).attr("a2s") == "exposure" && !$(this).is(":hidden"))
+                    $h.a2s.sendContentsLog($(this).attr("obj"), $(this).attr("opt"));
+                $(this).on("click", function () {
+                    $h.a2s.sendClickLog($(this).attr("obj"), $(this).attr("opt"));
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            func_onload();
+            setA2SLog($(this));
+        });
+    </script>
+</head>
+
+<body>
+    <div class="skipNav" id="skipNav"><a href="#wrapper">skip to contents</a></div>
+    <script src="https://rs.nxfs.nexon.com/common/js/gnb.min.js" type="text/javascript" charset="utf-8"
+        data-gamecode="65516" data-ispublicbanner="false"></script>
+    <div id="wrapper">
+        <div id="cnts">
+            <h1 id="ErrorMessage"></h1>
+            <p id="ErrorMessageInfo"></p>
+            <ul class="errorNote">
+                <li>같은 문제가 계속해서 발생하면 <a href="https://help.nexon.com/" a2s="click" obj="P_error"
+                        opt='{"Name":"help"}'>고객센터</a>로 문의해주세요.</li>
+                <li class="line"></li>
+                <li>넥슨의 전체서비스는 <a href="https://www.nexon.com/Home/Sitemap" a2s="click" obj="P_error"
+                        opt='{"Name":"Sitemap"}'>사이트맵</a>에서 확인하실 수 있습니다.</li>
+            </ul>
+            <p class="bt">
+                <a href="#" onclick="history.go(-1); return false;" a2s="click" obj="P_error" opt='{"Name":"Pre"}'><img
+                        src="https://ssl.nexon.com/S2/p3/etc/2016/bt_prev.gif" width="175" height="48" alt=" 이전페이지"></a>
+                <a href="https://www.nexon.com/" a2s="click" obj="P_error" opt='{"Name":"Home"}'><img
+                        src="https://ssl.nexon.com/S2/p3/etc/2016/bt_home.gif" width="175" height="48" alt="홈으로 이동"></a>
+            </p>
+        </div>
+    </div>
+
+</body>
+
+</html>
