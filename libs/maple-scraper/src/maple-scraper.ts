@@ -9,7 +9,7 @@ export type Character = {
   level: number;
   job: Job;
   guild: string;
-  experience: number;
+  experience: bigint;
   popularity: number;
 };
 
@@ -44,6 +44,7 @@ export class MapleScraper {
 
     const code = rawNickname.attr('href').match(/[?]p=(.+)/)[1];
 
+    // TODO: 데이터 검증
     return {
       avatar: rawAvatar.attr('src'),
       world: Number(rawWorld.attr('src').match(/(\d+)\.png$/)[1]),
@@ -51,7 +52,7 @@ export class MapleScraper {
       level: Number(rawLevel.text().match(/Lv\.(.+)/)[1]),
       job: rawJob.text().match(/\/\s(.+)/)[1],
       guild: rawGuild.text(),
-      experience: Number(rawExperience.text().replaceAll(',', '')),
+      experience: BigInt(rawExperience.text().replaceAll(',', '')),
       popularity: Number(rawPopularity.text()),
     };
   }
