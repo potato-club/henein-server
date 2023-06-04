@@ -5,6 +5,7 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@nestjs/bullmq": "^1.1.0",
     "@nestjs/common": "^9.4.0",
     "@nestjs/core": "^9.4.0",
     "@nestjs/microservices": "^9.4.0",
@@ -12,6 +13,7 @@
     "@nrwl/nest": "^15.9.2",
     "@prisma/client": "^4.14.1",
     "axios": "^1.0.0",
+    "bullmq": "^3.14.1",
     "cheerio": "1.0.0-rc.12",
     "express": "^4.18.1",
     "node-fetch": "^2.6.9",
