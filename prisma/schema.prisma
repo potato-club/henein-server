@@ -11,7 +11,7 @@ model Character {
   id         String   @id @default(uuid()) @db.Uuid
   avatar     String
   world      String
-  nickname   String   @unique @db.Char(12)
+  nickname   String   @unique
   level      Int
   job        String
   guild      Guild?   @relation(fields: [guildId], references: [id])

@@ -1,14 +1,16 @@
-import { Character, MapleScraper } from '@henein/maple-scraper';
+import { Character } from '@henein/maple-scraper';
+import { InjectQueue } from '@nestjs/bullmq';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Queue } from 'bullmq';
+import { v4 as uuidV4 } from 'uuid';
 
 import { PrismaService } from '../prisma.service';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
+import { CharacterProcessorData } from './character.processor';
 
 /*
   -[ ] 월드 이름
   -[ ] 닉네임 검증
-  -[ ] 타입 변경 함수
+  -[x] 타입 변경 함수
 */
 
 @Injectable()
@@ -16,7 +18,7 @@ export class CharacterService {
   constructor(
     private prisma: PrismaService,
     @InjectQueue('character')
-    private characterQueue: Queue<{ nickname: string }, Character>
+    private characterQueue: Queue<CharacterProcessorData, Character>
   ) {}
 
   async find(nickname: string) {
@@ -33,26 +35,9 @@ export class CharacterService {
     return character;
   }
 
-  async create(nickname: string) {
-    const scraper = new MapleScraper();
-    const scrapedCharacter = await scraper.searchCharacter(nickname);
-    // return await this.prisma.character.create({
-    //   data: {
-    //     nickname: scrapedCharacter.nickname,
-    //     avatar: scrapedCharacter.avatar,
-    //     world: scrapedCharacter.world + '',
-    //     level: scrapedCharacter.level,
-    //     job: scrapedCharacter.job,
-    //     // guild
-    //     experience: scrapedCharacter.experience,
-    //     popularity: scrapedCharacter.popularity,
-    //   },
-    // });
-  }
-
   async update(nickname: string) {
     const character = await this.prisma.character.findUnique({
-      where: { nickname: nickname },
+      where: { nickname },
     });
 
     const elapsedTime = Date.now() - character.updatedAt.getTime();
@@ -65,23 +50,13 @@ export class CharacterService {
       );
     }
 
-    const job = await this.characterQueue.add('', {
+    const jobId = uuidV4();
+
+    await this.characterQueue.add('', {
+      jobId,
       nickname,
     });
 
-    const scrapedCharacter = await job.waitUntilFinished(this.characterQueue);
-
-    return await this.prisma.character.update({
-      where: { id: nickname },
-      data: {
-        avatar: scrapedCharacter.avatar,
-        world: scrapedCharacter.world + '',
-        level: scrapedCharacter.level,
-        job: scrapedCharacter.job,
-        // guild
-        experience: scrapedCharacter.experience,
-        popularity: scrapedCharacter.popularity,
-      },
-    });
+    return jobId;
   }
 }

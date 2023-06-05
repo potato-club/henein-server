@@ -1,23 +1,19 @@
-import { Controller, Get, Post, Put, Query } from '@nestjs/common';
+import { ClassSerializerInterceptor, Controller, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
 
 import { CharacterService } from './character.service';
+import { CharacterEntity } from './character.entity';
 
 @Controller('character')
 export class CharacterController {
   constructor(private readonly characterService: CharacterService) {}
 
   @Get(':nickname')
-  async find(@Query('nickname') nickname: string) {
-    return this.characterService.find(nickname);
-  }
-
-  @Post(':nickname')
-  async create(@Query('nickname') nickname: string) {
-    return this.characterService.create(nickname);
+  async find(@Param('nickname') nickname: string): Promise<CharacterEntity> {
+    return new CharacterEntity(await this.characterService.find(nickname));
   }
 
   @Put(':nickname')
-  async update(@Query() nickname: string) {
-    return this.characterService.update(nickname);
+  async update(@Param('nickname') nickname: string): Promise<string> {
+    return await this.characterService.update(nickname);
   }
 }
