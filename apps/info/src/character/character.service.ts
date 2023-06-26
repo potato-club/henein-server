@@ -35,7 +35,7 @@ export class CharacterService {
     return character;
   }
 
-  async update(nickname: string) {
+  async update(nickname: string, callback: string) {
     const character = await this.prisma.character.findUnique({
       where: { nickname },
     });
@@ -55,6 +55,7 @@ export class CharacterService {
     await this.characterQueue.add('', {
       jobId,
       nickname,
+      callback
     });
 
     return jobId;

@@ -1,10 +1,32 @@
 import * as cheerio from 'cheerio';
 
+// TODO: DB로 변경하고 자동화 필요 함
+export enum World {
+  '리부트2' = 2,
+  '리부트',
+  '오로라',
+  '레드',
+  '이노시스',
+  '유니온',
+  '스카니아',
+  '루나',
+  '제니스',
+  '크로아',
+  '베라',
+  '엘리시움',
+  '아케인',
+  '노바',
+  '버닝',
+  '버닝2',
+  '버닝3',
+  '버닝4',
+}
+
 export type Job = string;
 
 export type Character = {
   avatar: string;
-  world: number;
+  world: string;
   nickname: string;
   level: number;
   job: Job;
@@ -13,6 +35,7 @@ export type Character = {
   popularity: number;
 };
 
+const SEARCH_SELECTOR = 'tr.search_com_chk';
 const AVATAR_SELECTOR = 'tr.search_com_chk > td.left > span > img:nth-child(1)';
 const NICKNAME_SELECTOR = 'tr.search_com_chk > td.left > dl > dt > a';
 const WORLD_SELECTOR = `${NICKNAME_SELECTOR} > img`;
@@ -23,7 +46,7 @@ const EXPERIENCE_SELECTOR = 'tr.search_com_chk > td:nth-child(4)';
 const POPULARITY_SELECTOR = 'tr.search_com_chk > td:nth-child(5)';
 
 export class MapleScraper {
-  async searchCharacter(nickname: string): Promise<Character> {
+  async searchCharacter(nickname: string): Promise<Character | undefined> {
     const response = await fetch(
       `https://maplestory.nexon.com/N23Ranking/World/Total?c=${encodeURI(
         nickname
@@ -32,6 +55,10 @@ export class MapleScraper {
     );
 
     const $ = cheerio.load(await response.text());
+
+    if (!$(SEARCH_SELECTOR).data()) {
+      return;
+    }
 
     const rawAvatar = $(AVATAR_SELECTOR);
     const rawNickname = $(NICKNAME_SELECTOR);
@@ -47,7 +74,12 @@ export class MapleScraper {
     // TODO: 데이터 검증
     return {
       avatar: rawAvatar.attr('src'),
-      world: Number(rawWorld.attr('src').match(/(\d+)\.png$/)[1]),
+      world:
+        Object.keys(World)[
+          Object.values(World).indexOf(
+            Number(rawWorld.attr('src').match(/(\d+)\.png$/)[1])
+          )
+        ],
       nickname: rawNickname.text(),
       level: Number(rawLevel.text().match(/Lv\.(.+)/)[1]),
       job: rawJob.text().match(/\/\s(.+)/)[1],
