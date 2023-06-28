@@ -10,8 +10,10 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
   imports: [
     BullModule.forRoot({
       connection: {
-        host: 'localhost',
-        port: 6379,
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT),
+        password: process.env.REDIS_PASSWORD,
+        username: process.env.REDIS_USERNAME,
       },
     }),
     CharacterModule,
