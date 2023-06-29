@@ -40,22 +40,24 @@ export class CharacterService {
       where: { nickname },
     });
 
-    const elapsedTime = Date.now() - character.updatedAt.getTime();
-    const waitingTime = 1000 * 60 * 60 * 24;
+    if (character) {
+      const elapsedTime = Date.now() - character.updatedAt.getTime();
+      const waitingTime = 1000 * 60 * 60 * 24;
 
-    if (elapsedTime < waitingTime) {
-      throw new HttpException(
-        `${waitingTime - elapsedTime}ms 후에 다시 시도해주세요`,
-        HttpStatus.BAD_REQUEST
-      );
+      if (elapsedTime < waitingTime) {
+        throw new HttpException(
+          `${waitingTime - elapsedTime}ms 후에 다시 시도해주세요`,
+          HttpStatus.BAD_REQUEST
+        );
+      }
     }
 
     const jobId = uuidV4();
 
-    await this.characterQueue.add('', {
+    this.characterQueue.add('', {
       jobId,
       nickname,
-      callback
+      callback,
     });
 
     return jobId;

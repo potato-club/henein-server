@@ -11,15 +11,15 @@ async function bootstrap() {
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
 
+  const globalPrefix = 'v1';
+  app.setGlobalPrefix(globalPrefix);
+
   const config = new DocumentBuilder()
     .setTitle('Henein Info Server')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-
-  const globalPrefix = 'v1';
-  app.setGlobalPrefix(globalPrefix);
+  SwaggerModule.setup(`${globalPrefix}/api`, app, document);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);

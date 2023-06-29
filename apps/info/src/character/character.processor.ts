@@ -3,6 +3,7 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { PrismaService } from '../prisma.service';
 import axios from 'axios';
+import { CharacterEntity } from './character.entity';
 
 export type CharacterProcessorData = {
   jobId: string;
@@ -46,6 +47,9 @@ export class CharacterProcessor extends WorkerHost {
 
     console.log(character);
 
-    axios.post(job.data.callback, { id: job.data.jobId, character });
+    axios.post(job.data.callback, {
+      id: job.data.jobId,
+      character: new CharacterEntity(character),
+    });
   }
 }
