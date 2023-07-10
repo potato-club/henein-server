@@ -2,6 +2,10 @@ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { Character } from '@prisma/client';
 import { Exclude, Transform } from 'class-transformer';
 
+BigInt.prototype["toJSON"] = function () {
+  return this.toString();
+};
+
 export class CharacterEntity implements Character {
   constructor(partial: Partial<CharacterEntity>) {
     Object.assign(this, partial);

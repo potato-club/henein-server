@@ -54,7 +54,7 @@ export class CharacterService {
 
     const jobId = uuidV4();
 
-    this.characterQueue.add('', {
+    await this.characterQueue.add('job', {
       jobId,
       nickname,
       callback,
