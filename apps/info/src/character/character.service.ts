@@ -36,21 +36,21 @@ export class CharacterService {
   }
 
   async update(nickname: string, callback: string) {
-    const character = await this.prisma.character.findUnique({
-      where: { nickname },
-    });
+    // const character = await this.prisma.character.findUnique({
+    //   where: { nickname },
+    // });
 
-    if (character) {
-      const elapsedTime = Date.now() - character.updatedAt.getTime();
-      const waitingTime = 1000 * 60 * 60 * 24;
+    // if (character) {
+    //   const elapsedTime = Date.now() - character.updatedAt.getTime();
+    //   const waitingTime = 1000 * 60 * 60 * 24;
 
-      if (elapsedTime < waitingTime) {
-        throw new HttpException(
-          `${waitingTime - elapsedTime}ms 후에 다시 시도해주세요`,
-          HttpStatus.BAD_REQUEST
-        );
-      }
-    }
+    //   if (elapsedTime < waitingTime) {
+    //     throw new HttpException(
+    //       `${waitingTime - elapsedTime}ms 후에 다시 시도해주세요`,
+    //       HttpStatus.BAD_REQUEST
+    //     );
+    //   }
+    // }
 
     const jobId = uuidV4();
 
