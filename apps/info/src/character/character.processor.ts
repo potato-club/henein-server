@@ -11,7 +11,7 @@ export type CharacterProcessorData = {
   callback: string;
 };
 
-@Processor('character', { limiter: { max: 1, duration: 1 } })
+@Processor('character')
 export class CharacterProcessor extends WorkerHost {
   constructor(private prisma: PrismaService) {
     super();
@@ -36,8 +36,6 @@ export class CharacterProcessor extends WorkerHost {
       experience: scrapedCharacter.experience,
       popularity: scrapedCharacter.popularity,
     };
-
-    console.log(data);
 
     const character = await this.prisma.character.upsert({
       where: {
